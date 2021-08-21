@@ -39,6 +39,7 @@ class ITEM{
         echo $this->gnlRequest('category');
 
     }
+    
     function getFirstLines(){
         $myText=$this->getText();
         $lines=explode("\n", $myText);
@@ -85,6 +86,7 @@ class ITEM{
 
 
     }
+
 
     function __destruct() {}
   

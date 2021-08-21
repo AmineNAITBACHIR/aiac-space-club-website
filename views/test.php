@@ -51,8 +51,19 @@ if (!isset($_SESSION[$category])) {
         ?>
 
             <form action="../backend/searchAndFilter.php"  method="POST">
+                <?php
+                if (in_array($myCategory, $_SESSION['filter'][$category])){
+
+         
+                 ?>
                 
-                <input type="checkbox"  name="selector" value="<?php echo $myCategory ?>" onChange='submit();'>
+                <input type="checkbox"  name="selector" value="<?php echo $myCategory ?>" onChange='submit();' checked>
+                <?php  } else{?>
+                    <input type="checkbox"  name="selector" value="<?php echo $myCategory ?>" onChange='submit();'>
+                
+
+                <?php } ?>
+           
                 <input type="hidden" name="categorySelected" value="<?php echo $myCategory ?>">
                 <label><?php echo $myCategory ?></label>
                 <input type="hidden" name="category" value="news">
@@ -106,9 +117,11 @@ if (!isset($_SESSION[$category])) {
                 </tr>
                 <tr>
                     <?php $item->getDateTime() ?>
+                    <?php $item->getTheme() ?>
 
 
                 </tr>
+
 
 
 
