@@ -10,7 +10,7 @@ $category = $_POST['category'];
 if (isset($_POST['textSearched'])) {
     $searchedText = $_POST['textSearched'];
 
-    if (isset($_SESSION['filter'][$category])) {
+    if (isset($_SESSION['filter'][$category]) && $_SESSION['filter'][$category] != array() ) {
 
         MYCATEGORY::getSearchedAndFilteredItemsByOrder($category, $searchedText);
     } else {
@@ -60,7 +60,7 @@ else {
     else {
 
         MYCATEGORY::getFilteredItemsByOrder($category);
-        
+
     }
 }
 
