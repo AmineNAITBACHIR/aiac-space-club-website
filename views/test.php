@@ -10,9 +10,9 @@ $category = 'news';
 
 
 
-if(!isset($_SESSION[$category])){
-  
-MYCATEGORY::getAllItemsByOrder($category);
+if (!isset($_SESSION[$category])) {
+
+    MYCATEGORY::getAllItemsByOrder($category);
 }
 
 
@@ -20,10 +20,12 @@ MYCATEGORY::getAllItemsByOrder($category);
 <!DOCTYPE html>
 <html lang="en">
 
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Document</title>
 </head>
 
@@ -37,26 +39,39 @@ MYCATEGORY::getAllItemsByOrder($category);
         <input type="submit" value="search">
 
 
+
     </form>
-    <form action="../backend/searchAndFilter.php">
+    <div class="pill-container">
         <?php
         //get all categories
 
-        $categories=MYCATEGORY::getAllCategories($category);
+        $categories = MYCATEGORY::getAllCategories($category);
         foreach ($categories as $myCategory) {
-           
+
         ?>
 
-        <input type="checkbox" name="<?php echo $myCategory?>" value="<?php echo $myCategory?>">
-        <label for="<?php echo $myCategory?>"><?php echo $myCategory?></label>
+            <form action="../backend/searchAndFilter.php"  method="POST">
+                
+                <input type="checkbox"  name="selector" value="<?php echo $myCategory ?>" onChange='submit();'>
+                <input type="hidden" name="categorySelected" value="<?php echo $myCategory ?>">
+                <label><?php echo $myCategory ?></label>
+                <input type="hidden" name="category" value="news">
+            </form>
+        <?php } ?>
 
 
 
-        <?php }?>
-   
-        <input type="hidden" name="category" value="news">
-        <input type="submit" value="Filter">
-    </form>
+
+
+    </div>
+ 
+
+
+
+
+
+
+
 
     <?php
     $items = $_SESSION[$category];
@@ -104,7 +119,7 @@ MYCATEGORY::getAllItemsByOrder($category);
         </table>
     <?php } ?>
 
-    
+
 
 
 </body>

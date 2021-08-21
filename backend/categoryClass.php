@@ -22,14 +22,26 @@ class MYCATEGORY{
         }
 
     }
+    private static function getTupleCategories($category){
+        $tupleCategories='(';
+        foreach ($_SESSION['filter'][$category] as $myCategory){
+            $tupleCategories=$tupleCategories."'".$myCategory."' , ";
+        }
+        
+        return($tupleCategories);
+    }
 
-    public static function getFilteredItemsByOrder($category,$categoriesSelected){
+    public function getFilteredItemsByOrder($category){
 
         include('../dB/config.php');
         //store all the records in this array
         //implode("','", array_map('mysql_real_escape_string', $arr))
+        $tupleCategories=MYCATEGORY::getTupleCategories($category);
         
-        $request = $db->query('SELECT * FROM '.$category.'WHERE category IN ('.implode("','", array_map('mysql_real_escape_string', $categoriesSelected)).') ORDER BY dateTime DESC; ');
+        $query='SELECT * FROM '.$category.' WHERE category IN '.$tupleCategories.' ORDER BY dateTime DESC; ';
+        $request = $db->query($query);
+        echo $query;
+        
         $_SESSION[$category]=array();
         while($response=$request->fetch()){
             array_push($_SESSION[$category],$response);
@@ -53,10 +65,13 @@ class MYCATEGORY{
 
 
     }
-    public static function getSearchedAndFilteredItemsByOrder($category,$searchText,$categoriesSelected){
+    public static function getSearchedAndFilteredItemsByOrder($category,$searchText){
         include('../dB/config.php');
+        echo 'session contain :------</br>';
+        print_r($_SESSION['filter'][$category]);
+        echo '</br>-------------------------';
      
-        $request= $db->query('SELECT * FROM '.$category.'WHERE title LIKE \'%'.$searchText.'%\' OR text LIKE \'%'.$searchText.'%\' AND  category IN ('.implode("','", array_map('mysql_real_escape_string', $categoriesSelected)).') ORDER BY dateTime DESC; ');
+        $request= $db->query('SELECT * FROM '.$category.'WHERE title LIKE \'%'.$searchText.'%\' OR text LIKE \'%'.$searchText.'%\' AND  category IN ('.implode("','", $_SESSION['filter'][$category]).') ORDER BY dateTime DESC; ');
         $_SESSION[$category]=array();
         while($response=$request->fetch()){
             array_push($_SESSION[$category],$response);
